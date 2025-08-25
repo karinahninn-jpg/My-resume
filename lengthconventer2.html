@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Measurement Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #d6bdd4;
+            text-align: center;
+            padding: 50px;
+        }
+        .converter {
+            background-color: rgb(184, 13, 53);
+            display: inline-block;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #3a5261;
+            color: white;
+        }
+        input[type="number"] {
+            width: 80px;
+            padding: 5px;
+        }
+        button {
+            padding: 6px 12px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        h1 { color: #333333; }
+    </style>
+</head>
+<body>
+
+    <h1>Measurement Converter</h1>
+    <div class="converter">
+        <label for="inchInput">Enter Inch: </label>
+        <input type="number" id="inchInput" placeholder="e.g. 3">
+        <br>
+        <button onclick="convertToCm()">Submit</button>
+        <button onclick="goBack()">Back</button>
+        <p id="resultText"></p>
+    </div>
+
+    <script>
+        function convertToCm() {
+            let inch = document.getElementById("inchInput").value;
+            if (inch === "" || isNaN(inch) || inch <= 0) {
+                alert("Please enter a valid positive number.");
+                return;
+            }
+            let cm = inch * 2.54;
+            document.getElementById("resultText").innerHTML = `Equal to ${cm.toFixed(2)} cm`;
+        }
+
+        function goBack() {
+            if (document.referrer) {
+                window.history.back();
+            } else {
+                alert("No previous page found.");
+            }
+        }
+    </script>
+
+</body>
+</html>

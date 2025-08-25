@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distance to Kasem Bundit University</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #f3e6f4;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: #333;
+            margin-top: 50px;
+        }
+        button {
+            background: #007BFF;
+            color: rgb(239, 206, 234);
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        p {
+            font-size: 18px;
+            margin-top: 20px;
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Distance Calculator</h1>
+    <button onclick="findMyLocation()">Where am I?</button>
+    <p id="result"></p>
+
+    <script>
+        // Coordinates of Kasem Bundit University (Main Campus, Hua Mak)
+        const kasemLat = 13.750346;
+        const kasemLon = 100.619231;
+
+        function findMyLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showDistance, showError);
+            } else {
+                document.getElementById("result").innerHTML = "Geolocation is not supported by your browser.";
+            }
+        }
+
+        function showDistance(position) {
+            let userLat = position.coords.latitude;
+            let userLon = position.coords.longitude;
+            let distance = getDistanceFromLatLonInKm(userLat, userLon, kasemLat, kasemLon);
+            document.getElementById("result").innerHTML = 
+                `You're ${distance.toFixed(2)} km away from the Kasem Bundit University.`;
+        }
+
+        function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Earth's radius in km
+            const dLat = deg2rad(lat2 - lat1);
+            const dLon = deg2rad(lon2 - lon1);
+            const a = 
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+
+        function deg2rad(deg) {
+            return deg * (Math.PI/180);
+        }
+
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    document.getElementById("result").innerHTML = "User denied the request for Geolocation.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    document.getElementById("result").innerHTML = "Location information is unavailable.";
+                    break;
+                case error.TIMEOUT:
+                    document.getElementById("result").innerHTML = "The request to get user location timed out.";
+                    break;
+                default:
+                    document.getElementById("result").innerHTML = "An unknown error occurred.";
+                    break;
+            }
+        }
+    </script>
+
+</body>
+</html>
